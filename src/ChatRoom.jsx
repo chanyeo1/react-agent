@@ -1,6 +1,7 @@
 import OpenAI from "openai";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
+import ListItem from "./ListItem";
 
 const openai = new OpenAI({ 
     apiKey: import.meta.env.VITE_OPENAI_API_KEY,
@@ -39,7 +40,7 @@ const ChatRoom = () => {
         <>
             <ul>
             {
-                messageList && messageList.map((elem) => <li key={uuidv4()}><strong>{elem.role}</strong>: {elem.content}</li>)
+                messageList && messageList.map((elem, idx) => <ListItem key={uuidv4()} index={idx} role={elem.role} content={elem.content} />)
             }
             </ul>
             <input 
