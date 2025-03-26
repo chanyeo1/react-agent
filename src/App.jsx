@@ -5,7 +5,6 @@ function App() {
 
   return (
     <>
-      <h2>hello, react!</h2>
       <ChatRoom />
     </>
   )
