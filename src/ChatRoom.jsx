@@ -1,7 +1,8 @@
 import OpenAI from "openai";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import ListItem from "./ListItem";
+import ThemeContext from "./contexts/ThemeContext";
 
 const openai = new OpenAI({ 
     apiKey: import.meta.env.VITE_OPENAI_API_KEY,
@@ -11,6 +12,7 @@ const openai = new OpenAI({
 const ChatRoom = () => {
     const [userMessage, setUserMessage] = useState('');
     const [messageList, setMessageList] = useState([]);
+    const theme = useContext(ThemeContext);
 
     const changeHandler = (e) => {
         //console.log(`change event: ${e.target.value}`);
@@ -38,7 +40,14 @@ const ChatRoom = () => {
 
     return (
         <>
-            <ul>
+            <ul style={{ 
+                background: theme === 'light' ? '#fff' : '#000', 
+                color: theme === 'light' ? '#000' : '#fff',
+                height: '500px',
+                listStyle: 'none',
+                padding: '10px',
+                boxSizing: 'border-box', 
+            }}>
             {
                 messageList && messageList.map((elem, idx) => <ListItem key={uuidv4()} index={idx} role={elem.role} content={elem.content} />)
             }
