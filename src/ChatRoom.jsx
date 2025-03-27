@@ -22,15 +22,26 @@ const ChatRoom = () => {
         userMessageInputRef.current.value = '';
 
         const completion = await openai.chat.completions.create({
+            model: "gpt-4o-search-preview",
+            web_search_options: {
+                user_location: {
+                    type: "approximate",
+                    approximate: {
+                        country: 'KR',
+                        city: 'Busan',
+                        timezone: 'Asia/Seoul',
+                    }
+                }
+            },
             messages: [...nextMessageList],
-            model: "gpt-4o-mini",
         });
 
+        console.log(completion);
         const { message={} } = completion.choices[0];
-        const { content='', role='' } = message;
-
+        const { content='', role='', annotations=[] } = message;
+        
         // AI 메세지 추가
-        setMessageList((prev) => [...prev, {role: role, content: content}]);
+        setMessageList((prev) => [...prev, {role: role, content: content, annotations: annotations}]);
     };
 
     return (
@@ -42,9 +53,19 @@ const ChatRoom = () => {
                 listStyle: 'none',
                 padding: '10px',
                 boxSizing: 'border-box', 
+                overflow: 'auto',
             }}>
             {
-                messageList && messageList.map((elem, idx) => <ListItem key={uuidv4()} index={idx} role={elem.role} content={elem.content} />)
+                messageList && messageList.map(
+                    (elem, idx) => 
+                        <ListItem 
+                            key={uuidv4()} 
+                            index={idx} 
+                            role={elem.role} 
+                            content={elem.content}
+                            annotations={elem.role === 'user' ? [] : elem.annotations} 
+                        />
+                )
             }
             </ul>
             <input 
