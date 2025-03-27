@@ -9,14 +9,21 @@ const openai = new OpenAI({
     dangerouslyAllowBrowser: true
 });
 
+const systemMessage = {
+    role: 'system',
+    content: `당신은 20년 경력의 자바스크립트 프로그래머입니다.`,
+}
+
 const ChatRoom = () => {
-    const [messageList, setMessageList] = useState([ { role: 'system', content: '당신은 세계 최고의 주식 투자 전문가입니다.' }]);
+    const [messageList, setMessageList] = useState([ systemMessage ]);
     const theme = useContext(ThemeContext);
     const userMessageInputRef = useRef(null);
 
     const submitHandler = async () => {
         // 유저 메세지 추가
         const userMessage = userMessageInputRef.current.value;
+        if(userMessage === '') return;
+
         const nextMessageList = [...messageList, { role: 'user', content: userMessage }];
         setMessageList(nextMessageList);
         userMessageInputRef.current.value = '';
@@ -57,13 +64,18 @@ const ChatRoom = () => {
             }}>
             {
                 messageList && messageList.map(
-                    (elem) => 
-                        <ListItem 
-                            key={uuidv4()} 
-                            role={elem.role} 
-                            content={elem.content}
-                            annotations={elem.role === 'user' ? [] : elem.annotations} 
-                        />
+                    (elem) => {
+                        if(elem.role !== 'system') {
+                            return (
+                                <ListItem 
+                                    key={uuidv4()} 
+                                    role={elem.role} 
+                                    content={elem.content}
+                                    annotations={elem.role === 'user' ? [] : elem.annotations} 
+                                />
+                            )
+                        }
+                    }
                 )
             }
             </ul>
