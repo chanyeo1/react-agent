@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import ListItem from "./ListItem";
 import ThemeContext from "./contexts/ThemeContext";
@@ -10,21 +10,16 @@ const openai = new OpenAI({
 });
 
 const ChatRoom = () => {
-    const [userMessage, setUserMessage] = useState('');
     const [messageList, setMessageList] = useState([]);
     const theme = useContext(ThemeContext);
-
-    const changeHandler = (e) => {
-        //console.log(`change event: ${e.target.value}`);
-        setUserMessage(e.target.value);
-    };
+    const userMessageInputRef = useRef(null);
 
     const submitHandler = async () => {
-        setUserMessage('');
-        
         // 유저 메세지 추가
+        const userMessage = userMessageInputRef.current.value;
         const nextMessageList = [...messageList, { role: 'user', content: userMessage }];
         setMessageList(nextMessageList);
+        userMessageInputRef.current.value = '';
 
         const completion = await openai.chat.completions.create({
             messages: [...nextMessageList],
@@ -54,9 +49,8 @@ const ChatRoom = () => {
             </ul>
             <input 
                 type="text" 
-                value={userMessage}
-                placeholder='enter your messages...' 
-                onChange={changeHandler} 
+                placeholder='enter your messages...'
+                ref={userMessageInputRef}
             />
             <input type="submit" value="전송" onClick={submitHandler} />
         </>
