@@ -10,7 +10,7 @@ const openai = new OpenAI({
 });
 
 const ChatRoom = () => {
-    const [messageList, setMessageList] = useState([]);
+    const [messageList, setMessageList] = useState([ { role: 'system', content: '당신은 세계 최고의 주식 투자 전문가입니다.' }]);
     const theme = useContext(ThemeContext);
     const userMessageInputRef = useRef(null);
 
@@ -57,10 +57,9 @@ const ChatRoom = () => {
             }}>
             {
                 messageList && messageList.map(
-                    (elem, idx) => 
+                    (elem) => 
                         <ListItem 
                             key={uuidv4()} 
-                            index={idx} 
                             role={elem.role} 
                             content={elem.content}
                             annotations={elem.role === 'user' ? [] : elem.annotations} 

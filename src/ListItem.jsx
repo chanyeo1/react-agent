@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-const ListItem = ({ index, role, content, annotations=[] }) => {
+const ListItem = ({ role, content, annotations=[] }) => {
     return (
         <li style={{
             boxSizing: 'border-box',
