@@ -1,26 +1,12 @@
-import { useContext } from 'react';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import ThemeContext from '../contexts/ThemeContext';
-
 const AppHeader = () => {
-    const theme = useContext(ThemeContext);
+    const style = {
+        background: 'red',
+        width: '100%',
+    }
+    
     return (
-        <header>
-            <Navbar expand="lg" className="bg-body-tertiary" bg={theme} data-bs-theme={theme}>
-                <Container>
-                    <Navbar.Brand href="#home">React-Agent</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
-                        <Nav.Link href="#none">Chatrooms</Nav.Link>
-                        <Nav.Link href="#none">Setting</Nav.Link>
-                    </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
+        <header style={style}>
+            <h3>TEMU-AICFO-HEADER</h3>
         </header>
     );
 };

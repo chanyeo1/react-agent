@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import './App.css'
-import ChatRoom from './ChatRoom'
 import ThemeContext from './contexts/ThemeContext';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import AppBody from './layout/AppBody';
 import AppHeader from './layout/AppHeader';
+import AppFooter from './layout/AppFooter';
 
 
 function App() {
@@ -11,8 +11,8 @@ function App() {
   return (
       <ThemeContext.Provider value={theme}>
         <AppHeader />
-        <ChatRoom />
-        <button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>{ theme === 'light' ? '다크모드' : '라이트모드' }</button>
+        <AppBody />
+        <AppFooter />
       </ThemeContext.Provider>
   )
 }
